@@ -2,6 +2,9 @@ package fundamentals.bagsqueuesandstacks;
 
 import java.util.Iterator;
 
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+
 
 
 public class Queue<Item> implements Iterable<Item> {
@@ -23,6 +26,25 @@ public class Queue<Item> implements Iterable<Item> {
 		return N;
 	}
 	
+	public void enQueue(Item item){
+		Node oldLast = last;
+		 last = new Node();
+		 last.item = item;
+		 if (isEmpty())
+			 first = last;
+		 else
+			 oldLast.next = last;
+		 N++;
+	}
+	
+	public Item deQueue(){
+		Item item = first.item;
+		first = first.next;
+		if(isEmpty())
+			last = null;
+		N--;
+		return item;
+	}
 	
 	@Override
 	public Iterator<Item> iterator() {
@@ -45,6 +67,19 @@ public class Queue<Item> implements Iterable<Item> {
 			current = current.next;
 			return item;
 		}
-		
 	}
+	
+	public static void main(String[] args) {
+		Queue<String> q = new Queue<>();
+		while (!StdIn.isEmpty()){
+			String item = StdIn.readString();
+			if(!item.equals("-"))
+				q.enQueue(item);
+			else if (q.isEmpty()==false)
+				StdOut.print(q.deQueue() + " ");
+			
+		}
+		StdOut.println("("+q.size()+" left on queue!)");
+	}
+	
 }
