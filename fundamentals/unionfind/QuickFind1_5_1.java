@@ -7,11 +7,12 @@ import java.util.Scanner;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Stopwatch;
 
-public class UF {
+public class QuickFind1_5_1 {
 	private int[] id;
 	private int count;
+	public int cost;
 	
-	public UF(int N) {
+	public QuickFind1_5_1(int N) {
 		count = N;
 		id = new int[N];
 		for (int i=0; i<N; i++) {
@@ -28,43 +29,47 @@ public class UF {
 	}
 	
 	
-//	//the quick find algorithm
-//	public int find(int p) {
-//		return id[p];
-//	}
-//	
-//	public void union(int p, int q) {
-//		int pID = find(p);
-//		int qID = find(q);
-//		
-//		if (pID == qID)
-//			return;
-//		for(int i=0; i<id.length; i++) {
-//			if(id[i]==pID)
-//				id[i] = qID;
-//		}
-//		count --;
-//	}
-	
-	//quick union algorithms
+	//the quick find algorithm
 	public int find(int p) {
-		while(p != id[p]) {
-			p = id[p];
-		}
-		
-		return p;
+		cost++;
+		return id[p];
 	}
 	
 	public void union(int p, int q) {
-		int pRoot = find(p);
-		int qRoot = find(q);
+		int pID = find(p);
+		int qID = find(q);
 		
-		if (pRoot == qRoot)
+		if (pID == qID)
 			return;
-		
-		id[pRoot] = qRoot;
-		count--;
+		for(int i=0; i<id.length; i++) {
+			cost++;
+			if(id[i]==pID)
+				id[i] = qID;
+		}
+		count --;
 	}
+	
+//	//quick union algorithms
+//	public int find(int p) {
+//		while(p != id[p]) {
+//			p = id[p];
+//			cost++;
+//		}
+//		
+//		return p;
+//	}
+//	
+//	public void union(int p, int q) {
+//		int pRoot = find(p);
+//		int qRoot = find(q);
+//		
+//		if (pRoot == qRoot)
+//			return;
+//		
+//		id[pRoot] = qRoot;
+//		cost++;
+//		count--;
+//	}
 	
 	@Override
 	public String toString() {
@@ -75,19 +80,19 @@ public class UF {
 			else
 				s += "," + id[i];
 		}
-		return s+"]";
+		return s+"]"+cost;
 	}
 	
 	
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		File file = new File("data//largeUF.txt");
+		File file = new File("src/fundamentals/unionfind/1_5_1to3.data.txt");
 		Scanner sc = new Scanner(file);
 		int N = sc.nextInt();
 		//count for display
 		int dspCount = 0;
 		Stopwatch sw = new Stopwatch();
-		UF uf = new UF(N);
+		QuickFind1_5_1 uf = new QuickFind1_5_1(N);
 		while (sc.hasNextLine()) {
 			int p = sc.nextInt();
 			int q = sc.nextInt();
@@ -101,7 +106,7 @@ public class UF {
 		}
 		double time = sw.elapsedTime();
 		StdOut.println(uf.count() + " components");
-		System.out.println("time used:" + time);
+		System.out.println(uf);
 		sc.close();
 //		StdOut.println(uf);
 	}

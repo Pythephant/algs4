@@ -7,11 +7,12 @@ import java.util.Scanner;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Stopwatch;
 
-public class UF {
+public class QuickUnion1_5_2 {
 	private int[] id;
 	private int count;
+	public int cost;
 	
-	public UF(int N) {
+	public QuickUnion1_5_2(int N) {
 		count = N;
 		id = new int[N];
 		for (int i=0; i<N; i++) {
@@ -50,6 +51,7 @@ public class UF {
 	public int find(int p) {
 		while(p != id[p]) {
 			p = id[p];
+			cost++;
 		}
 		
 		return p;
@@ -63,6 +65,7 @@ public class UF {
 			return;
 		
 		id[pRoot] = qRoot;
+		cost++;
 		count--;
 	}
 	
@@ -75,19 +78,19 @@ public class UF {
 			else
 				s += "," + id[i];
 		}
-		return s+"]";
+		return s+"]"+cost;
 	}
 	
 	
 	
 	public static void main(String[] args) throws FileNotFoundException {
-		File file = new File("data//largeUF.txt");
+		File file = new File("data/mediumUF.txt");
 		Scanner sc = new Scanner(file);
 		int N = sc.nextInt();
 		//count for display
 		int dspCount = 0;
 		Stopwatch sw = new Stopwatch();
-		UF uf = new UF(N);
+		QuickUnion1_5_2 uf = new QuickUnion1_5_2(N);
 		while (sc.hasNextLine()) {
 			int p = sc.nextInt();
 			int q = sc.nextInt();
@@ -101,7 +104,7 @@ public class UF {
 		}
 		double time = sw.elapsedTime();
 		StdOut.println(uf.count() + " components");
-		System.out.println("time used:" + time);
+		System.out.println(uf);
 		sc.close();
 //		StdOut.println(uf);
 	}
