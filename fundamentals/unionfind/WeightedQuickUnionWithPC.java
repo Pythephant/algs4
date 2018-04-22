@@ -8,13 +8,13 @@ import java.util.Scanner;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.Stopwatch;
 
-public class WeightedQuickUnion1_5_3 {
+public class WeightedQuickUnionWithPC {
 	private int[] id;
 	private int[] w;
 	private int count;
 	private int cost;
 	
-	public WeightedQuickUnion1_5_3(int N) {
+	public WeightedQuickUnionWithPC(int N) {
 		count = N;
 		id = new int[N];
 		for (int i=0;i<N;i++) {
@@ -32,8 +32,9 @@ public class WeightedQuickUnion1_5_3 {
 	
 	public int find(int p) {
 		while(id[p]!=p) {
-			cost++;
+			id[p] = id[id[p]];
 			p = id[p];
+			cost += 3;
 		}
 		return p;
 	}
@@ -99,7 +100,7 @@ public class WeightedQuickUnion1_5_3 {
 		//count for display
 //		int dspCount = 0;
 		Stopwatch sw = new Stopwatch();
-		WeightedQuickUnion1_5_3 uf = new WeightedQuickUnion1_5_3(N);
+		WeightedQuickUnionWithPC uf = new WeightedQuickUnionWithPC(N);
 		while (sc.hasNextLine()) {
 			int p = sc.nextInt();
 			int q = sc.nextInt();
