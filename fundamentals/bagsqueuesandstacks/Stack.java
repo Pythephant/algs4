@@ -62,6 +62,16 @@ public class Stack<Item> implements Iterable<Item> {
 		
 	}
 	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		String s = "[";
+		for (Item i : this){
+			s += i + " ";
+		}
+		return s+"]";
+	}
+	
 	//test main
 	public static void main(String[] args) throws FileNotFoundException {
 		Scanner sc = new Scanner(new File("data//tobe.txt"));
@@ -75,6 +85,8 @@ public class Stack<Item> implements Iterable<Item> {
 		}
 		System.out.print("(" + s.size() + " left on stack)");
 		sc.close();
+		
+		
 	}
 	
 }
