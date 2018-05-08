@@ -25,14 +25,14 @@ public class MergeHalfAux {
 				// second half subarray has already merged
 				a[k] = aux[i];
 				i++;
-			} else if (Example.less(aux[i], a[j])) {
+			} else if (Example.less(a[j], aux[i])) {
 				// a[i] is smaller, so merge a[i] into a
-				a[k] = aux[i];
-				i++;
-			} else {
 				a[k] = a[j];
 				count += mid - i + 1;
 				j++;
+			} else {
+				a[k] = aux[i];
+				i++;
 			}
 		}
 		return count;
