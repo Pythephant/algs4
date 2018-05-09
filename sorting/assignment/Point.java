@@ -42,8 +42,8 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
-	 * Draws the line segment between this point and the specified point to
-	 * standard draw.
+	 * Draws the line segment between this point and the specified point to standard
+	 * draw.
 	 *
 	 * @param that
 	 *            the other point
@@ -54,12 +54,12 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
-	 * Returns the slope between this point and the specified point. Formally,
-	 * if the two points are (x0, y0) and (x1, y1), then the slope is (y1 - y0)
-	 * / (x1 - x0). For completeness, the slope is defined to be +0.0 if the
-	 * line segment connecting the two points is horizontal;
-	 * Double.POSITIVE_INFINITY if the line segment is vertical; and
-	 * Double.NEGATIVE_INFINITY if (x0, y0) and (x1, y1) are equal.
+	 * Returns the slope between this point and the specified point. Formally, if
+	 * the two points are (x0, y0) and (x1, y1), then the slope is (y1 - y0) / (x1 -
+	 * x0). For completeness, the slope is defined to be +0.0 if the line segment
+	 * connecting the two points is horizontal; Double.POSITIVE_INFINITY if the line
+	 * segment is vertical; and Double.NEGATIVE_INFINITY if (x0, y0) and (x1, y1)
+	 * are equal.
 	 *
 	 * @param that
 	 *            the other point
@@ -78,16 +78,16 @@ public class Point implements Comparable<Point> {
 	}
 
 	/**
-	 * Compares two points by y-coordinate, breaking ties by x-coordinate.
-	 * Formally, the invoking point (x0, y0) is less than the argument point
-	 * (x1, y1) if and only if either y0 < y1 or if y0 = y1 and x0 < x1.
+	 * Compares two points by y-coordinate, breaking ties by x-coordinate. Formally,
+	 * the invoking point (x0, y0) is less than the argument point (x1, y1) if and
+	 * only if either y0 < y1 or if y0 = y1 and x0 < x1.
 	 *
 	 * @param that
 	 *            the other point
-	 * @return the value <tt>0</tt> if this point is equal to the argument point
-	 *         (x0 = x1 and y0 = y1); a negative integer if this point is less
-	 *         than the argument point; and a positive integer if this point is
-	 *         greater than the argument point
+	 * @return the value <tt>0</tt> if this point is equal to the argument point (x0
+	 *         = x1 and y0 = y1); a negative integer if this point is less than the
+	 *         argument point; and a positive integer if this point is greater than
+	 *         the argument point
 	 */
 	public int compareTo(Point that) {
 		/* YOUR CODE HERE */

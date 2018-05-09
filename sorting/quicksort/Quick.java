@@ -8,7 +8,7 @@ import sorting.elementarysorts.Example;
 
 public class Quick {
 	public static void sort(Comparable[] a) {
-		StdRandom.shuffle(a);
+		//StdRandom.shuffle(a);
 		sort(a, 0, a.length - 1);
 	}
 
@@ -22,8 +22,8 @@ public class Quick {
 
 	public static int partition(Comparable[] a, int lo, int hi) {
 		Comparable pivot = a[lo];
-		int i = lo+1;
-		int j = hi;
+		int i = lo;
+		int j = hi + 1;
 		while (true) {
 			while (Example.less(a[++i], pivot)) {
 				if (i == hi)

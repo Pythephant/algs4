@@ -1,8 +1,10 @@
 package sorting.elementarysorts;
 
+
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import fundamentals.analysisofalgorithms.Stopwatch;
+import sorting.quicksort.Quick;
 
 public class SortCompare {
 	public static double time(String alg, Double[] a) {
@@ -15,7 +17,8 @@ public class SortCompare {
 			Shell.sort(a);
 		else if (alg.equals("Merge"))
 			Merge.sort(a);
-		
+		else if (alg.endsWith("Quick"))
+			Quick.sort(a);
 		return timer.elapsedTime();
 	}
 	
