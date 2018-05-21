@@ -9,8 +9,14 @@ import edu.princeton.cs.algs4.StdOut;
 
 public class FastCollinearPoints {
 
-	private LineSegment[] lines; // the lineSegments consisted by more than 4 points
+	private Node first; // the lineSegments consisted by more than 4
+						// points
 	private int N; // the number of the lineSegments
+
+	private class Node {
+		LineSegment line;
+		Node next;
+	}
 
 	/**
 	 * construct the line segments, if there are more than 4 points
@@ -18,12 +24,22 @@ public class FastCollinearPoints {
 	 * @param points
 	 */
 	public FastCollinearPoints(Point[] points) {
-		Arrays.sort(points);
-		lines = new LineSegment[points.length];
+		if (points == null)
+			throw new IllegalArgumentException();
+		first = null;
 		N = 0;
 		Point[] sortedPoints = new Point[points.length];
-		for (int i = 0; i < points.length; i++)
+		for (int i = 0; i < points.length; i++) {
+			if (points[i] == null)
+				throw new IllegalArgumentException();
 			sortedPoints[i] = points[i];
+		}
+		Arrays.sort(sortedPoints);
+		for (int i = 0; i < sortedPoints.length; i++) {
+			if (i > 0 && sortedPoints[i].compareTo(sortedPoints[i - 1]) == 0)
+				throw new IllegalArgumentException();
+		}
+		// outer loop , search each point as the origin point of slope
 		for (int i = 0; i < points.length; i++) {
 			Comparator<Point> cmp = points[i].slopeOrder();
 			Arrays.sort(sortedPoints, cmp);
@@ -38,7 +54,10 @@ public class FastCollinearPoints {
 				if (thisSlope != orgSlope) {
 					// if previous slope has more than 4 points
 					if (count >= 3 && minPoint == pivot) {
-						lines[N] = new LineSegment(minPoint, maxPoint);
+						Node preFirst = first;
+						first = new Node();
+						first.line = new LineSegment(minPoint, maxPoint);
+						first.next = preFirst;
 						N++;
 					}
 					count = 1;
@@ -53,26 +72,46 @@ public class FastCollinearPoints {
 				if (maxPoint.compareTo(thisPoint) < 0)
 					maxPoint = sortedPoints[j];
 			}
-			// the last line
+			// the last line, if the last 4 or more point are in a line
 			if (count >= 3 && minPoint == pivot) {
-				lines[N] = new LineSegment(minPoint, maxPoint);
+				Node preFirst = first;
+				first = new Node();
+				first.line = new LineSegment(minPoint, maxPoint);
+				first.next = preFirst;
 				N++;
 			}
 		}
 	}
 
+	/**
+	 * return the number of the lineSegment
+	 * 
+	 * @return
+	 */
 	public int numberOfSegments() {
 		return N;
 	}
 
+	/**
+	 * return the copy of the lineSegment array;
+	 * 
+	 * @return
+	 */
 	public LineSegment[] segments() {
 		LineSegment[] segs = new LineSegment[N];
+		Node current = first;
 		for (int i = 0; i < N; i++) {
-			segs[i] = lines[i];
+			segs[i] = current.line;
+			current = current.next;
 		}
 		return segs;
 	}
 
+	/**
+	 * Unit test
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		// read the n points from a file
 		In in = new In(args[0]);

@@ -5,6 +5,7 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import fundamentals.analysisofalgorithms.Stopwatch;
 import sorting.quicksort.Quick;
+import sorting.quicksort.Quick3Way;
 
 public class SortCompare {
 	public static double time(String alg, Double[] a) {
@@ -19,6 +20,8 @@ public class SortCompare {
 			Merge.sort(a);
 		else if (alg.endsWith("Quick"))
 			Quick.sort(a);
+		else if(alg.endsWith("Quick3"))
+			Quick3Way.sort(a);
 		return timer.elapsedTime();
 	}
 	
@@ -34,7 +37,7 @@ public class SortCompare {
 		Double[] a = new Double[N];
 		for (int t = 0; t<T; t++) {
 			for (int i =0 ;i <N; i++)
-				a[i] = StdRandom.uniform();
+				a[i] = (double) StdRandom.uniform(1);
 			total += time(alg, a);
 		}
 		return total;

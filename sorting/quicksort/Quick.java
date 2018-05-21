@@ -8,7 +8,7 @@ import sorting.elementarysorts.Example;
 
 public class Quick {
 	public static void sort(Comparable[] a) {
-		//StdRandom.shuffle(a);
+		StdRandom.shuffle(a);
 		sort(a, 0, a.length - 1);
 	}
 
@@ -25,12 +25,14 @@ public class Quick {
 		int i = lo;
 		int j = hi + 1;
 		while (true) {
-			while (Example.less(a[++i], pivot)) {
-				if (i == hi)
+//			while (Example.less(a[++i], pivot)) {
+			while (Example.less(pivot, a[++i]) == false) {
+				if (i >= j-1)
 					break;
 			}
-			while (Example.less(pivot, a[--j])) {
-				if (j == lo)
+//			while (Example.less(pivot, a[--j])) {
+			while (Example.less(a[--j], pivot) == false) {
+				if (j <= i)
 					break;
 			}
 			if (i >= j)
@@ -44,7 +46,7 @@ public class Quick {
 	public static void main(String[] args) {
 		Double[] a = new Double[Integer.parseInt(args[0])];
 		for (int i = 0; i < a.length; i++) {
-			a[i] = (double) StdRandom.uniform(a.length);
+			a[i] = (double) StdRandom.uniform(3);
 		}
 		StdOut.println(Arrays.toString(a));
 		sort(a);

@@ -7,34 +7,47 @@ import edu.princeton.cs.algs4.StdDraw;
 import edu.princeton.cs.algs4.StdOut;
 
 public class BruteCollinearPoints {
-	private LineSegment[] lines; // all the LineSegments contain by the points
+	private Node first; // all the LineSegments contain by the points
 	private int N; // the Number of the lineSegments;
-	
+
+	private class Node {
+		LineSegment line;
+		Node next;
+	}
+
 	/**
 	 * construct the collinearPoints lines
+	 * 
 	 * @param points
 	 */
 	public BruteCollinearPoints(Point[] points) {
 		if (points == null)
 			throw new java.lang.IllegalArgumentException();
-		Arrays.sort(points);
+		Point[] clonePoints = new Point[points.length];
 		for (int i = 0; i < points.length; i++) {
-			if(points[i]==null)
+			if (points[i] == null)
 				throw new IllegalArgumentException();
-			if(i>0 && points[i].compareTo(points[i-1])==0)
+			clonePoints[i] = points[i];
+		}
+		Arrays.sort(clonePoints);
+		for (int i = 0; i < clonePoints.length; i++) {
+			if (i > 0 && clonePoints[i].compareTo(clonePoints[i - 1]) == 0)
 				throw new IllegalArgumentException();
 		}
 		N = 0;
-		lines = new LineSegment[points.length];
-		for (int i = 0; i < points.length; i++) {
-			for (int j = i + 1; j < points.length; j++) {
-				for (int k = j + 1; k < points.length; k++) {
-					for (int l = k + 1; l < points.length; l++) {
-						double slopeIJ = points[i].slopeTo(points[j]);
-						double slopeIK = points[i].slopeTo(points[k]);
-						double slopeIL = points[i].slopeTo(points[l]);
+		first = null;
+		for (int i = 0; i < clonePoints.length; i++) {
+			for (int j = i + 1; j < clonePoints.length; j++) {
+				for (int k = j + 1; k < clonePoints.length; k++) {
+					for (int l = k + 1; l < clonePoints.length; l++) {
+						double slopeIJ = clonePoints[i].slopeTo(clonePoints[j]);
+						double slopeIK = clonePoints[i].slopeTo(clonePoints[k]);
+						double slopeIL = clonePoints[i].slopeTo(clonePoints[l]);
 						if (slopeIJ == slopeIK && slopeIJ == slopeIL) {
-							lines[N] = new LineSegment(points[i], points[l]);
+							Node preFirst = first;
+							first = new Node();
+							first.line = new LineSegment(clonePoints[i], clonePoints[l]);
+							first.next = preFirst;
 							N++;
 						}
 					}
@@ -44,8 +57,8 @@ public class BruteCollinearPoints {
 	}
 
 	/**
-	 * the Number of Segments of the lines consisted by the points;
-	 * @return, the Number
+	 * the Number of Segments of the lines consisted by the points; @return, the
+	 * Number
 	 */
 	public int numberOfSegments() {
 		return N;
@@ -53,17 +66,22 @@ public class BruteCollinearPoints {
 
 	/**
 	 * return the copy of the linesegments
+	 * 
 	 * @return
 	 */
 	public LineSegment[] segments() {
 		LineSegment[] segs = new LineSegment[N];
-		for (int i = 0; i < N; i++)
-			segs[i] = lines[i];
+		Node current = first;
+		for (int i = 0; i < N; i++) {
+			segs[i] = current.line;
+			current = current.next;
+		}
 		return segs;
 	}
 
 	/**
 	 * Unit test;
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
