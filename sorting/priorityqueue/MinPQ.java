@@ -2,6 +2,7 @@ package sorting.priorityqueue;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class MinPQ<Key> implements Iterable<Key> {
 
@@ -41,11 +42,21 @@ public class MinPQ<Key> implements Iterable<Key> {
 	}
 
 	public Key min() {
-
+		return pq[1];
 	}
 
 	public Key delMin() {
-
+		if (isEmpty())
+			throw new NoSuchElementException("The Priority Queue is already empty!");
+		Key temp = pq[1];
+		exch(1, n);
+		pq[n] = null;
+		n--;
+		sink(1);
+		if (n > 0 && n < pq.length / 4)
+			resize(pq.length / 2);
+		assert isMinHeap();
+		return temp;
 	}
 
 	public void insert(Key key) {
@@ -81,13 +92,17 @@ public class MinPQ<Key> implements Iterable<Key> {
 	}
 
 	private boolean greater(int x, int y) {
-
+		if (comparator == null) {
+			return ((Comparable<Key>) pq[x]).compareTo(pq[y]) > 0;
+		} else {
+			return comparator.compare(pq[x], pq[y]) > 0;
+		}
 	}
 
 	private void exch(int x, int y) {
 		Key temp = pq[x];
 		pq[x] = pq[y];
-		pq
+		pq[y] = temp;
 	}
 
 	@Override
