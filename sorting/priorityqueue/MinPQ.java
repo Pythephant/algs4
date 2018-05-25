@@ -1,8 +1,12 @@
 package sorting.priorityqueue;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class MinPQ<Key> implements Iterable<Key> {
 
@@ -30,7 +34,15 @@ public class MinPQ<Key> implements Iterable<Key> {
 	}
 
 	public MinPQ(Key[] keys) {
-
+		n = keys.length;
+		pq = (Key[]) new Object[n + 1];
+		for (int i = 0; i < keys.length; i++) {
+			pq[i + 1] = keys[i];
+		}
+		for (int k = n / 2; k >= 1; k--) {
+			sink(k);
+		}
+		assert isMinHeap();
 	}
 
 	public boolean isEmpty() {
@@ -42,6 +54,8 @@ public class MinPQ<Key> implements Iterable<Key> {
 	}
 
 	public Key min() {
+		if (isEmpty())
+			throw new NoSuchElementException("The priority Queue is empty!");
 		return pq[1];
 	}
 
@@ -60,7 +74,12 @@ public class MinPQ<Key> implements Iterable<Key> {
 	}
 
 	public void insert(Key key) {
-
+		if (n == pq.length - 1)
+			resize(2 * n);
+		n++;
+		pq[n] = key;
+		swim(n);
+		assert isMinHeap();
 	}
 
 	private void resize(int capacity) {
@@ -80,7 +99,7 @@ public class MinPQ<Key> implements Iterable<Key> {
 	}
 
 	private void sink(int k) {
-		while (k <= n) {
+		while (2*k <= n) {
 			int j = 2 * k;
 			if (j < n && greater(j, j + 1))
 				j++;
@@ -105,10 +124,83 @@ public class MinPQ<Key> implements Iterable<Key> {
 		pq[y] = temp;
 	}
 
+	private boolean isMinHeap() {
+		return isMinHeap(1);
+	}
+
+	private boolean isMinHeap(int k) {
+		if (k > n)
+			return true;
+		int left = 2 * k;
+		int right = 2 * k + 1;
+		if (left <= n && greater(k, left))
+			return false;
+		if (right <= n && greater(k, right))
+			return false;
+		return isMinHeap(left) && isMinHeap(right);
+	}
+
 	@Override
 	public Iterator<Key> iterator() {
 		// TODO Auto-generated method stub
-		return null;
+		return new HeapIterator();
 	}
+	private class HeapIterator implements Iterator<Key>{
 
+		private MinPQ<Key> copy;
+		
+		public HeapIterator() {
+			if (comparator==null)
+				copy = new MinPQ(size());
+			else
+				copy = new MinPQ(size(), comparator);
+			for(int k=1;k<size()+1;k++)
+				copy.insert(pq[k]);
+		}
+		
+		@Override
+		public boolean hasNext() {
+			// TODO Auto-generated method stub
+			return !copy.isEmpty();
+		}
+
+		@Override
+		public Key next() {
+			// TODO Auto-generated method stub
+			return copy.delMin();
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		Double[] arr = new Double[10];
+		MinPQ<Double> pq = new MinPQ<>(new Comparator<Double>() {
+
+			@Override
+			public int compare(Double o1, Double o2) {
+				// TODO Auto-generated method stub
+				return -o1.compareTo(o2);
+			}
+		}) ;
+		
+		MinPQ<Double> pqMin = new MinPQ<>();
+		
+		for(int i=0;i<arr.length;i++) {
+			arr[i] = (double) StdRandom.uniform(arr.length);
+			pq.insert(arr[i]);
+			pqMin.insert(arr[i]);
+		}
+		StdOut.println(Arrays.toString(arr));
+		Iterator<Double> it = pq.iterator();
+		while(it.hasNext()) {
+			StdOut.print(it.next()+" ");
+		}
+		StdOut.println();
+		Iterator<Double> itMin = pqMin.iterator();
+		while(itMin.hasNext()) {
+			StdOut.print(itMin.next()+" ");
+		}
+		
+		
+	}
 }
