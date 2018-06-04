@@ -44,7 +44,8 @@ public class BinarySearchST<Key extends Comparable<Key>, Value> {
 	}
 
 	public Value get(Key key) {
-
+		if (isEmpty())
+			return null;
 		int i = rank(key);
 		if (i < n && key.compareTo(keys[i]) == 0)
 			return values[i];
@@ -81,10 +82,21 @@ public class BinarySearchST<Key extends Comparable<Key>, Value> {
 	}
 
 	public Key floor(Key key) {
-
+		int i = rank(key);
+		if (i == 0)
+			return null;
+		else if (i != n && key.compareTo(keys[i]) == 0)
+			return keys[i];
+		else
+			return keys[i - 1];
 	}
 
 	public Key ceil(Key key) {
+		int i = rank(key);
+		if (i == n || isEmpty())
+			return null;
+		else
+			return keys[i];
 
 	}
 
@@ -104,7 +116,10 @@ public class BinarySearchST<Key extends Comparable<Key>, Value> {
 	}
 
 	public Key select(int k) {
-		return keys[k];
+		if (k < 0 || k > n - 1)
+			return null;
+		else
+			return keys[k];
 	}
 
 	public void deleteMin() {
@@ -116,7 +131,7 @@ public class BinarySearchST<Key extends Comparable<Key>, Value> {
 	}
 
 	public int size(Key lo, Key hi) {
-
+		return rank(hi) - rank(lo);
 	}
 
 	public Iterable<Key> keys(Key lo, Key hi) {
