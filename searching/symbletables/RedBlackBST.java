@@ -10,13 +10,13 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 		private Value value;
 		private Node left;
 		private Node right;
-		private int count;
+		private int size;
 		private boolean color;
 
-		public Node(Key key, Value value, int count, boolean color) {
+		public Node(Key key, Value value, int size, boolean color) {
 			this.key = key;
 			this.value = value;
-			this.count = count;
+			this.size = size;
 			this.color = color;
 		}
 	}
@@ -29,7 +29,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 		if (x == null)
 			return 0;
 		else
-			return x.count;
+			return x.size;
 	}
 
 	public Value get(Key key) {
@@ -38,17 +38,77 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
 		return get(root, key);
 
 	}
-	
+
 	private Value get(Node x, Key key) {
-		
+		while (x != null) {
+			int cmp = key.compareTo(x.key);
+			if (cmp > 0)
+				x = x.right;
+			else if (cmp < 0)
+				x = x.left;
+			else
+				return x.value;
+		}
+		return null;
 	}
 
 	public void put(Key key, Value value) {
+		if (key == null || value == null)
+			throw new IllegalArgumentException("the key or value is null!");
+		put(root, key, value);
+	}
+	
+	private void put(Node h, Key key, Value value){
+		
+	}
 
+	private Node balance(Node h) {
+		if (isRed(h.right) && !isRed(h.left))
+			h = rotateLeft(h);
+		if (isRed(h.left) && isRed(h.left.left))
+			h = rotateRight(h);
+		if (isRed(h.left) && isRed(h.right))
+			flipColors(h);
+		h.size = 1 + size(h.left) + size(h.right);
+		return h;
+	}
+
+	private void flipColors(Node h) {
+		h.color = !h.color;
+		h.left.color = !h.left.color;
+		h.right.color = !h.right.color;
+	}
+
+	private Node rotateLeft(Node h) {
+		Node x = h.right;
+		h.right = x.left;
+		x.left = h;
+		x.color = h.color;
+		h.color = RED;
+		x.size = h.size;
+		h.size = 1 + size(h.left) + size(h.right);
+		return x;
+	}
+
+	private Node rotateRight(Node h) {
+		Node x = h.left;
+		h.left = x.right;
+		x.right = h;
+		x.color = h.color;
+		h.color = RED;
+		x.size = h.size;
+		h.size = 1 + size(h.left) + size(h.right);
+		return x;
+	}
+
+	private boolean isRed(Node x) {
+		if (x == null)
+			return false;
+		return x.color == RED;
 	}
 
 	public boolean isEmpty() {
-
+		return root == null;
 	}
 
 	public Key min() {
